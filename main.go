@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -10,6 +11,15 @@ import (
 )
 
 func main() {
+	// Define command-line flags
+    packageManager := flag.String("pm", "uv", "Package manager to use: uv or poetry")
+    flag.Parse()
+
+	// Validate package manager choice
+    if *packageManager != "uv" && *packageManager != "poetry" {
+        log.Fatalf("Invalid package manager: %s. Choose 'uv' or 'poetry'.", *packageManager)
+    }
+
 	// Prompt for root directory
 	fmt.Println("Root directory where you want the repository to be cloned to:")
 	var root_dir string
@@ -48,7 +58,17 @@ func main() {
         log.Fatalf("Error changing to cloned directory: %s\n%s", clonedDir, err)
     }
 
-	// Setup UV environment
+	// Setup environment based on package manager choice
+    if *packageManager == "uv" {
+        setupUVEnvironment()
+    } else if *packageManager == "poetry" {
+        setupPoetryEnvironment()
+    }
+
+    fmt.Println("Environment setup complete.")
+}
+
+func setupUVEnvironment() {
     // Create virtual environment
     venvCmd := exec.Command("uv", "venv")
     venvOutput, err := venvCmd.CombinedOutput()
@@ -56,8 +76,6 @@ func main() {
         log.Fatalf("uv venv failed with %s\n%s", err, string(venvOutput))
     }
 
-	// Activate venv and install dependencies (assuming pyproject.toml or requirements.txt exists)
-    // For pyproject.toml, use uv sync; for requirements.txt, uv pip install -r requirements.txt
     // Check for pyproject.toml first
     if _, err := os.Stat("pyproject.toml"); err == nil {
         syncCmd := exec.Command("uv", "sync")
@@ -74,6 +92,20 @@ func main() {
     } else {
         fmt.Println("No pyproject.toml or requirements.txt found; skipping dependency installation.")
     }
+}
 
-    fmt.Println("UV environment setup complete.")
+func setupPoetryEnvironment() {
+    // Check for pyproject.toml
+    if _, err := os.Stat("pyproject.toml"); err != nil {
+        log.Fatalf("No pyproject.toml found. Poetry requires a pyproject.toml file.")
+    }
+
+    // Install dependencies using poetry
+    installCmd := exec.Command("poetry", "install")
+    installOutput, err := installCmd.CombinedOutput()
+    if err != nil {
+        log.Fatalf("poetry install failed with %s\n%s", err, string(installOutput))
+    }
+
+    fmt.Println("Poetry environment created and dependencies installed.")
 }
