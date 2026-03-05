@@ -1,4 +1,3 @@
-```markdown
 # go-py-devenv
 
 A small Golang utility that takes a repository and root directory location and sets up a Python environment using your choice of package manager.
