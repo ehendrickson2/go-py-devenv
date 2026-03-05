@@ -59,10 +59,13 @@ func main() {
     }
 
 	// Setup environment based on package manager choice
-    if *packageManager == "uv" {
+    switch *packageManager {
+    case "uv":
         setupUVEnvironment()
-    } else if *packageManager == "poetry" {
+    case "poetry":
         setupPoetryEnvironment()
+    default:
+        log.Fatalf("Unknown package manager: %s", *packageManager)
     }
 
     fmt.Println("Environment setup complete.")
