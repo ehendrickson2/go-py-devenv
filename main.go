@@ -21,9 +21,17 @@ func main() {
     }
 
 	// Prompt for root directory
-	fmt.Println("Root directory where you want the repository to be cloned to:")
+	fmt.Println("Root directory where you want the repository to be cloned to (leave blank for current directory):")
 	var rootDir string
 	fmt.Scanln(&rootDir)
+	if strings.TrimSpace(rootDir) == "" {
+		pwd, err := os.Getwd()
+		if err != nil {
+			log.Fatalf("unable to determine current directory: %s", err)
+		}
+		rootDir = pwd
+		fmt.Printf("Using current directory: %s\n", rootDir)
+	}
 
 	// Prompt user for repository
 	fmt.Println("Repository you are cloning:")
