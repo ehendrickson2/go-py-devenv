@@ -22,8 +22,8 @@ func main() {
 
 	// Prompt for root directory
 	fmt.Println("Root directory where you want the repository to be cloned to:")
-	var root_dir string
-	fmt.Scanln(&root_dir)
+	var rootDir string
+	fmt.Scanln(&rootDir)
 
 	// Prompt user for repository
 	fmt.Println("Repository you are cloning:")
@@ -31,14 +31,14 @@ func main() {
 	fmt.Scanln(&repo)
 
 	// Change to root directory
-	if err := os.Chdir(root_dir); err != nil {
-		log.Fatalf("Error changing to directory: %s\n%s", root_dir, err)
+	if err := os.Chdir(rootDir); err != nil {
+		log.Fatalf("Error changing to directory: %s\n%s", rootDir, err)
 	}
 
 	// Extract repository name from URL (assuming format like https://github.com/user/repo.git)
     repoURLParts := strings.Split(repo, "/")
     repoName := strings.TrimSuffix(repoURLParts[len(repoURLParts)-1], ".git")
-    clonedDir := filepath.Join(root_dir, repoName)
+    clonedDir := filepath.Join(rootDir, repoName)
 
     // Check if repository directory already exists
     if _, err := os.Stat(clonedDir); err == nil {
@@ -46,9 +46,9 @@ func main() {
     } else {
         // Clone repository
         clone := exec.Command("git", "clone", repo)
-        clone_output, err := clone.CombinedOutput()
+        cloneOutput, err := clone.CombinedOutput()
         if err != nil {
-            log.Fatalf("clone.CombinedOutput() failed with %s\n%s", err, string(clone_output))
+            log.Fatalf("clone.CombinedOutput() failed with %s\n%s", err, string(cloneOutput))
         }
         fmt.Printf("Repository cloned at %s\n", clonedDir)
     }
