@@ -59,7 +59,7 @@ The utility will then:
 Root directory where you want the repository to be cloned to:
 /home/user/projects
 Repository you are cloning:
-https://github.com/nautobot/nautobot.git
+https://github.com/ehendrickson2/asteroids
 ```
 
 ### Using Poetry:
@@ -68,5 +68,5 @@ https://github.com/nautobot/nautobot.git
 Root directory where you want the repository to be cloned to:
 /home/user/projects
 Repository you are cloning:
-https://github.com/nautobot/nautobot.git
+https://github.com/ehendrickson2/asteroids
 ```
