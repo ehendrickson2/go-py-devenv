@@ -12,7 +12,7 @@ A small Golang utility that takes a repository and root directory location and s
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/go-py-devenv.git
+git clone https://github.com/ehendrickson2/go-py-devenv.git
 cd go-py-devenv
 ```
 
